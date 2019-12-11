@@ -1,0 +1,48 @@
+{
+  dynamic: [
+    {
+      guard: {
+        componentPresent: "Behaviors:flee",
+        child: {
+          sequence:[
+            check_flee_stop,
+            { lookup: { tree: "Behaviors:flee" }}
+          ]
+        }
+      }
+    },
+    {
+      sequence: [
+        {
+          condition: {
+            componentPresent: "Health",
+            values: ["V currentHealth < 30"]
+          }
+        },
+        {
+          condition: {
+            componentPresent: "Behaviors:findNearbyPlayers",
+            values:["N charactersWithinRange nonEmpty"]
+          }
+        },
+        followCharacter,
+        { lookup: { tree:"Behaviors:attackFollowedEntity" }}
+      ]
+    },
+    {
+      guard: {
+        componentPresent: "Behaviors:findNearbyPlayers",
+        values: ["N charactersWithinRange nonEmpty"],
+        child: {
+          sequence: [
+            followCharacter,
+            { lookup: { tree:"WildAnimals:follow" }}
+          ]
+        }
+      }
+   },
+   {
+     lookup: { tree:"Behaviors:stray" }
+   }
+  ]
+}
